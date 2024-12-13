@@ -8,17 +8,17 @@ async def main():
 
     async with websockets.connect(uri) as websocket:
         # Sende die "hello" Nachricht
-        await websocket.send("subscribe -e window_managed")
+        await websocket.send("sub -e window_managed")
 
         while True:
             response = await websocket.recv()
             json_response = json.loads(response)
             try:
                 sizePercentage = json_response["data"]["managedWindow"][
-                    "sizePercentage"
+                    "tilingSize"
                 ]
                 if sizePercentage <= 0.5:
-                    await websocket.send('command "tiling direction toggle"')
+                    await websocket.send('command toggle-tiling-direction')
             except KeyError:
                 pass
 
